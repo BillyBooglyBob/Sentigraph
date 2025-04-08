@@ -1,0 +1,2 @@
+Activate venv environment for Python backend
+- source venv/bin/activate
