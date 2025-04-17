@@ -1,7 +1,7 @@
 import DashboardCard from "@/components/dashboard/DashboardCard";
 
 import CompaniesTable from "@/components/companies/CompaniesTable";
-import { Company } from "@/types/company";
+
 import { columns } from "@/components/companies/columns";
 import companies from "@/data/companies";
 
