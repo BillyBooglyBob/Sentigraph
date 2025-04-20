@@ -19,6 +19,7 @@ import {
   ChartArea,
   Settings,
   User,
+  Folder,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -50,10 +51,10 @@ const Sidebar = () => {
       <CommandInput placeholder="Type a command or search..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading="Suggestions">
+        <CommandGroup heading="Sentiment Analysis">
           <CommandItem>
             <LayoutDashboard className="mr-2 h-2 w-4" />
-            <Link href="/dashboard">Dashboard</Link>
+            <Link href="/">Dashboard</Link>
           </CommandItem>
           <CommandItem>
             <Newspaper className="mr-2 h-2 w-4" />
@@ -62,6 +63,13 @@ const Sidebar = () => {
           <CommandItem>
             <ChartArea className="mr-2 h-2 w-4" />
             <Link href="/compare">Compare</Link>
+          </CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup heading="User Management">
+          <CommandItem>
+            <Folder className="mr-2 h-2 w-4" />
+            <Link href="/admin">Admin</Link>
           </CommandItem>
         </CommandGroup>
         <CommandSeparator />

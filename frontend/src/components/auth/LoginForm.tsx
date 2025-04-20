@@ -1,0 +1,133 @@
+"use client";
+
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+} from "@/components/ui/card";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+
+const formSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email" }).min(1, {
+    message: "Email is required",
+  }),
+  password: z.string().min(6, {
+    message: "Password is required",
+  }),
+});
+
+const LoginForm = () => {
+  // For redirecting to another page after login
+  const router = useRouter();
+
+  // Define form
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  // Toggle password visibility
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  // Handle form submission
+  const handleSubmit = (data: z.infer<typeof formSchema>) => {
+    router.push("/");
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Login</CardTitle>
+        <CardDescription>
+          Log into your account with your credentials
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-2">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-6"
+          >
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white">
+                    Email
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      className="bg-slate-100 dark:bg-slate-500 border-0 
+                    focus-visible:ring-0 text-black dark:text-white 
+                    focus-visible:ring-offset-0"
+                      placeholder="Enter the email"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white">
+                    Password
+                  </FormLabel>
+                  <div className="relative">
+                    <FormControl>
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        className="bg-slate-100 dark:bg-slate-500 border-0 
+                    focus-visible:ring-0 text-black dark:text-white 
+                    focus-visible:ring-offset-0"
+                        placeholder="Enter the password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2"
+                    >
+                      {showPassword ? <EyeOff /> : <Eye />}
+                    </button>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button className="w-full">Login</Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default LoginForm;

@@ -1,4 +1,3 @@
-// import { Company } from "@/types/company";
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
@@ -15,7 +14,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Company } from "@/types/company";
 
-export const columns: ColumnDef<Company>[] = [
+export const DataTableColumns: ColumnDef<Company>[] = [
   {
     id: "select",
     header: ({ table }) => (

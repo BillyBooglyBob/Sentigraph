@@ -1,9 +1,10 @@
 import DashboardCard from "@/components/dashboard/DashboardCard";
 
-import CompaniesTable from "@/components/companies/CompaniesTable";
-
-import { columns } from "@/components/companies/columns";
+import DataTable from "@/components/DataTable";
+import { DataTableColumns} from "@/components/companies/DataTableColumns";
 import companies from "@/data/companies";
+
+import AnalyticsChart from "@/components/dashboard/AnalyticsChart";
 
 export default function Home() {
   return (
@@ -21,7 +22,10 @@ export default function Home() {
         />
       </div>
       <div>
-        <CompaniesTable columns={columns} data={companies}/>
+        <AnalyticsChart />
+      </div>
+      <div>
+        <DataTable columns={DataTableColumns} data={companies} />
       </div>
     </div>
   );

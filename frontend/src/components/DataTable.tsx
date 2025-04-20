@@ -30,17 +30,16 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import Link from "next/link";
-import { Company } from "@/types/company";
 
-interface CompaniesTableProps<TData, TValue> {
+interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-const CompaniesTable = <TData, TValue>({
+const DataTable = <TData, TValue>({
   columns,
   data,
-}: CompaniesTableProps<TData, TValue>) => {
+}: DataTableProps<TData, TValue>) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -71,9 +70,9 @@ const CompaniesTable = <TData, TValue>({
   return (
     <div>
       <div className="flex items-center py-4">
-        {/* Search filter - Filter for specific companies */}
+        {/* Search filter - Filter for specific Data */}
         <Input
-          placeholder="Filter companies..."
+          placeholder="Filter Data..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
@@ -175,7 +174,7 @@ const CompaniesTable = <TData, TValue>({
             {table.getSelectedRowModel().rows.map((row) => (
               <Link
                 key={row.id}
-                href={`/companies/${row.id}`}
+                href={`/Data/${row.id}`}
                 className="text-blue-500 hover:underline"
               >
                 {row.getValue("name")}
@@ -208,4 +207,4 @@ const CompaniesTable = <TData, TValue>({
   );
 };
 
-export default CompaniesTable;
+export default DataTable;
