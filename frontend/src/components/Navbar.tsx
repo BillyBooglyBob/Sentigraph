@@ -14,7 +14,7 @@ import ThemeToggler from "@/components/ThemeToggler";
 
 const Navbar = () => {
   return (
-    <div className="bg-primary dark:bg-slate-700 py-4 px-5 flex justify-between text-white">
+    <div className="fixed z-10 w-full bg-primary dark:bg-slate-700 py-4 px-5 flex justify-between text-white">
       <Link href="/">
         <Image src={logo} alt="Sentigraph" width={40} className="rounded-xl" />
       </Link>
