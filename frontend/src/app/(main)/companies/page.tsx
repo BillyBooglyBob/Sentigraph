@@ -3,7 +3,7 @@ import DataTable from "@/components/DataTable";
 import { DataTableColumns } from "@/components/companies/DataTableColumns";
 import companies from "@/data/companies";
 
-const page = () => {
+const CompaniesPage = () => {
   return (
     <>
       <BackButton text="Go Back" link="/" />
@@ -12,4 +12,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default CompaniesPage;
