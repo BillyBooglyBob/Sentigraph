@@ -13,8 +13,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Company } from "@/types/company";
+import { useRouter } from "next/navigation";
 
-export const DataTableColumns: ColumnDef<Company>[] = [
+export const CompanyDataTableColumns: ColumnDef<Company>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -71,6 +72,9 @@ export const DataTableColumns: ColumnDef<Company>[] = [
       // Can do stuff like calling the delete API with the id.
       const company = row.original;
 
+      // Used to navigate to different pages
+      const router = useRouter();
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -85,13 +89,16 @@ export const DataTableColumns: ColumnDef<Company>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
+              onClick={() => router.push(`/companies/${company.id}`)}
+            >
+              View Company
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(company.id)}
             >
               Delete
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View Company</DropdownMenuItem>
-            {/* <DropdownMenuItem>View company details</DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );

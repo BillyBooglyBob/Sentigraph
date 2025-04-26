@@ -39,7 +39,7 @@ const items = {
     },
     {
       title: "Compare",
-      url: "/compare",
+      url: "/sentiment-comparison",
       icon: ChartArea,
     },
   ],
