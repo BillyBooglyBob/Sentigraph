@@ -4,8 +4,8 @@ import DataTable from "@/components/data-table/DataTable";
 import { CompanyDataTableColumns } from "@/components/companies/DataTableColumns";
 import companies from "@/data/companies";
 
-import AnalyticsChart from "@/components/dashboard/AnalyticsChart";
-import CompaniesDataFormModal from "@/components/companies/DataFormModal";
+import AnalyticsChart from "@/components/dashboard/Chart";
+import CompanyDataFormModal from "@/components/companies/DataFormModal";
 
 export default function Home() {
   return (
@@ -29,7 +29,7 @@ export default function Home() {
         <DataTable
           columns={CompanyDataTableColumns}
           data={companies}
-          DataModal={CompaniesDataFormModal}
+          DataModal={CompanyDataFormModal}
         />
       </div>
     </div>

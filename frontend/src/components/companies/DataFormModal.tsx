@@ -4,7 +4,7 @@ import React from "react";
 import DataModal from "@/components/data-table/DataModal";
 import DataForm from "@/components/companies/DataForm";
 
-const CompaniesDataFormModal = () => {
+const CompanyDataFormModal = () => {
   return (
     <DataModal
       title="Add a company"
@@ -14,4 +14,4 @@ const CompaniesDataFormModal = () => {
   );
 };
 
-export default CompaniesDataFormModal;
+export default CompanyDataFormModal;

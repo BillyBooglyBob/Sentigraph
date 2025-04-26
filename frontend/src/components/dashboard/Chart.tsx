@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   LineChart,
@@ -7,6 +7,8 @@ import {
   YAxis,
   CartesianGrid,
   ResponsiveContainer,
+  Tooltip,
+  Legend,
 } from "recharts";
 import {
   Card,
@@ -17,9 +19,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Sentiment } from "@/types/sentiment";
-import sentiments from "@/data/sentiments";
 
-const AnalyticsChart = () => {
+interface ChartProps {
+  data: Sentiment[];
+}
+
+const Chart = ({ data }: ChartProps) => {
   return (
     <>
       <Card>
@@ -30,11 +35,13 @@ const AnalyticsChart = () => {
         <CardDescription>
           <div className="w-[100%] h-[300px]">
             <ResponsiveContainer>
-              <LineChart width={1100} height={300} data={sentiments}>
-                <Line type="monotone" stroke="#8884d8" dataKey="value" />
+              <LineChart width={1100} height={300} data={data}>
                 <CartesianGrid stroke="#ccc" />
                 <XAxis dataKey="date" />
-                <YAxis/>
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" stroke="#8884d8" dataKey="value" />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -44,4 +51,4 @@ const AnalyticsChart = () => {
   );
 };
 
-export default AnalyticsChart;
+export default Chart;

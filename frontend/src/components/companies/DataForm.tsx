@@ -28,6 +28,9 @@ const CompanyDataForm = () => {
   // Define form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      company: "",
+    },
   });
 
   // Handle form submission
@@ -39,6 +42,7 @@ const CompanyDataForm = () => {
       },
     });
   };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">

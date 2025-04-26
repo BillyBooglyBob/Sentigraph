@@ -4,7 +4,7 @@ import BackButton from "@/components/BackButton";
 import DataTable from "@/components/data-table/DataTable";
 import { CompanyDataTableColumns } from "@/components/companies/DataTableColumns";
 import companies from "@/data/companies";
-import CompaniesDataFormModal from "@/components/companies/DataFormModal";
+import CompanyDataFormModal from "@/components/companies/DataFormModal";
 
 const CompaniesPage = () => {
   return (
@@ -13,7 +13,7 @@ const CompaniesPage = () => {
       <DataTable
         columns={CompanyDataTableColumns}
         data={companies}
-        DataModal={CompaniesDataFormModal}
+        DataModal={CompanyDataFormModal}
       />
     </>
   );
