@@ -1,0 +1,2 @@
+- Make sidebar and page responsive
+- Comparison charts
