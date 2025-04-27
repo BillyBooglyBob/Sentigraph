@@ -1,6 +1,5 @@
 "use client";
 
-import BackButton from "@/components/BackButton";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -64,7 +63,6 @@ const EditUserForm = ({ userId }: UserEditPageProps) => {
 
   return (
     <>
-      <BackButton text="Go Back" link="/admin" />
       <h3 className="text-2xl mb-4">Edit User</h3>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">

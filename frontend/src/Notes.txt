@@ -1,1 +1,8 @@
 - Comparison charts
+
+
+Backend:
+- Store data efficiently
+- Create the schema
+- Decide where to have the caching
+- Use docker to develop and deploy, easier

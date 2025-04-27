@@ -1,36 +1,25 @@
-// src/components/Sentiment/CompanySelector.tsx
-import React from "react";
+"use client";
 
-interface CompanySelectorProps {
+import Selector from "@/components/dashboard/selector/Selector";
+
+interface CompaniesSelectorProps {
   companies: string[];
-  selectedCompanies: string[];
-  onChange: (selected: string[]) => void;
+  handleCompaniesChange: (
+    selectedOrUpdater: string[] | ((prev: string[]) => string[])
+  ) => void;
 }
 
-const CompanySelector: React.FC<CompanySelectorProps> = ({ companies, selectedCompanies, onChange }) => {
-  const handleChange = (company: string) => {
-    if (selectedCompanies.includes(company)) {
-      onChange(selectedCompanies.filter((item) => item !== company));
-    } else {
-      onChange([...selectedCompanies, company]);
-    }
-  };
-
+const CompaniesSelector = ({
+  companies,
+  handleCompaniesChange,
+}: CompaniesSelectorProps) => {
   return (
-    <div>
-      <h3>Select Companies</h3>
-      {companies.map((company) => (
-        <label key={company}>
-          <input
-            type="checkbox"
-            checked={selectedCompanies.includes(company)}
-            onChange={() => handleChange(company)}
-          />
-          {company}
-        </label>
-      ))}
-    </div>
+    <Selector
+      label="company"
+      selectors={companies}
+      handleSelectorChange={handleCompaniesChange}
+    />
   );
 };
 
-export default CompanySelector;
+export default CompaniesSelector;

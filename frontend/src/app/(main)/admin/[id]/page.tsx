@@ -2,6 +2,7 @@
 
 import { use } from "react";
 import EditUserForm from "@/components/user/EditUserForm";
+import BackButton from "@/components/BackButton";
 
 interface AdminEditPageProps {
   params: Promise<{ id: string }>;
@@ -13,6 +14,7 @@ const AdminEditUserPage = ({ params }: AdminEditPageProps) => {
 
   return (
     <>
+      <BackButton text="Go Back" link="/admin" />
       <EditUserForm userId={userId} />
     </>
   );

@@ -4,6 +4,7 @@ import { useState, useEffect, use } from "react";
 import Chart from "@/components/dashboard/Chart";
 import AspectSelector from "@/components/dashboard/selector/AspectSelector";
 import sentiments from "@/data/sentiments";
+import BackButton from "@/components/BackButton";
 
 interface CompanyPageProps {
   params: Promise<{ id: string }>;
@@ -24,6 +25,7 @@ const CompanyPage = ({ params }: CompanyPageProps) => {
 
   return (
     <div className="flex flex-col gap-4">
+      <BackButton text="Go Back" link="/companies" />
       <h1>Sentiment for {companyId}</h1>
 
       <div className="w-20">

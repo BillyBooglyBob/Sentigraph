@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import EditUserForm from "@/components/user/EditUserForm";
 
 const ProfilePage = () => {
@@ -6,6 +7,7 @@ const ProfilePage = () => {
 
   return (
     <>
+      <BackButton text="Go Back" link="/" />
       <EditUserForm userId={userId} />
     </>
   );
