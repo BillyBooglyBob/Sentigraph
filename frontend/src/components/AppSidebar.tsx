@@ -71,8 +71,7 @@ const AppSidebar = () => {
   const pathname = usePathname();
 
   const isActive = (url: string) => {
-    if (url === "/") return pathname === url;
-    return pathname.startsWith(url);
+    return pathname === url
   };
 
   return (

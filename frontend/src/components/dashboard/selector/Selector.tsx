@@ -98,7 +98,7 @@ const Selector = ({
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" className="capitalize">
+        <Button variant="outline" className="capitalize w-28">
           {pluralLabel}
         </Button>
       </SheetTrigger>

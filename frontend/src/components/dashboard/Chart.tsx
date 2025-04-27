@@ -1,15 +1,12 @@
 "use client";
 
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  Legend,
-} from "recharts";
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import {
   Card,
   CardContent,
@@ -18,37 +15,65 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Sentiment } from "@/types/sentiment";
 
 interface ChartProps {
-  data: Sentiment[];
+  data: any[]; // Array of data
+  labels: string[]; // Labels for each line (e.g., "Customer Service", "Product Quality")
+  colors: string[]; // Colors to use for the lines
+  title: string; // Title of the chart
+  description: string; // Description of the chart
 }
 
-const Chart = ({ data }: ChartProps) => {
+const Chart = ({ data, labels, colors, title, description }: ChartProps) => {
+  // Dynamically generate the chartConfig based on labels and colors
+  console.log("Chart data:", data);
+  console.log("Chart labels:", labels);
+
+  const chartConfig = Object.fromEntries(
+    labels.map((label, index) => [
+      label.toLowerCase().replace(/\s+/g, ""),
+      {
+        label,
+        color: colors[index],
+      },
+    ])
+  ) satisfies ChartConfig;
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sentiment for Amazon</CardTitle>
-        <CardDescription>Customer service: Jan 2023 - Jan 2024</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="w-[100%] h-[300px]">
-          <ResponsiveContainer>
-            <LineChart
-              data={data}
-              width={1100}
-              height={300}
-              margin={{ left: 0, right: 30 }}
-            >
-              <CartesianGrid stroke="#ccc" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" stroke="#8884d8" dataKey="value" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+        <ChartContainer config={chartConfig}>
+          <LineChart
+            accessibilityLayer
+            data={data}
+            margin={{
+              right: 20,
+            }}
+          >
+            <CartesianGrid stroke="#ccc" />
+            <XAxis
+              dataKey="date"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+            />
+            <YAxis />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            {labels.map((label, index) => (
+              <Line
+                // Convert to camelCase to match the dataset keys
+                dataKey={label.replace(/\s+/g, "")}
+                type="monotone"
+                strokeWidth={2}
+                stroke={colors[index]}
+                dot={true}
+              />
+            ))}
+          </LineChart>
+        </ChartContainer>
       </CardContent>
     </Card>
   );

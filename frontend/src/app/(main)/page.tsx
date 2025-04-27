@@ -23,7 +23,7 @@ export default function Home() {
         />
       </div>
       <div>
-        <AnalyticsChart />
+        {/* <AnalyticsChart /> */}
       </div>
       <div>
         <DataTable
