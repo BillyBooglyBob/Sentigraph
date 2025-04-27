@@ -39,7 +39,7 @@ const items = {
     },
     {
       title: "Compare",
-      url: "/sentiment-comparison",
+      url: "/companies-comparison",
       icon: ChartArea,
     },
   ],

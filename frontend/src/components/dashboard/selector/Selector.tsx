@@ -29,7 +29,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 const formSchema = z.object({
   selector: z.string().min(1, {
-    message: "Selector name is required",
+    message: "Name is required",
   }),
 });
 
@@ -76,6 +76,9 @@ const Selector = ({
     // If selector already exists, show error
     if (selectors.includes(data.selector)) {
       toast.error(`${label} already exists`);
+    } else if (selectors.length >= 3) {
+      // If there are already 3 selectors, show error
+      toast.error(`You can only add up to 3 ${pluralLabel}`);
     } else {
       // Add the new selector to the list
       handleSelectorChange((prev: string[]) => [...prev, data.selector]);
@@ -95,7 +98,9 @@ const Selector = ({
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" className="capitalize">{pluralLabel}</Button>
+        <Button variant="outline" className="capitalize">
+          {pluralLabel}
+        </Button>
       </SheetTrigger>
       <SheetContent side="left">
         <SheetHeader>
@@ -114,18 +119,23 @@ const Selector = ({
               control={form.control}
               name="selector"
               render={({ field }) => (
-                <FormItem className="w-3/4">
+                <FormItem className="w-full">
                   <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white">
                     {label}
                   </FormLabel>
                   <FormControl>
-                    <Input
-                      className="bg-slate-100 dark:bg-slate-500 border-0
-                  focus-visible:ring-0 text-black dark:text-white
-                  focus-visible:ring-offset-0"
-                      placeholder={`Enter the ${label} name`}
-                      {...field}
-                    />
+                    <div className="flex justify-between gap-3">
+                      <Input
+                        className="flex bg-slate-100 dark:bg-slate-500 border-0
+                      focus-visible:ring-0 text-black dark:text-white
+                      focus-visible:ring-offset-0"
+                        placeholder={`Enter the ${label} name`}
+                        {...field}
+                      />
+                      <Button className="flex dark:bg-slate-800 dark:text-white">
+                        Add {label}
+                      </Button>
+                    </div>
                   </FormControl>
                   <FormDescription className="text-xs text-zinc-500 dark:text-white">
                     This is the {label} you're adding.
@@ -134,9 +144,6 @@ const Selector = ({
                 </FormItem>
               )}
             />
-            <Button className="flex dark:bg-slate-800 dark:text-white">
-              Add {label}
-            </Button>
           </form>
         </Form>
         <ScrollArea className="mx-4 rounded-md border dark:border-slate-700 h-[70%]">
