@@ -76,19 +76,19 @@ const CompanyComparisonPage = ({ params }: CompanyComparisonPageProps) => {
     },
     {
       date: "2023-09-01",
-      CustomerService: 0.7,
+      CustomerService: null,
       ProductQuality: 0.6,
       Delivery: 0.7,
     },
     {
       date: "2023-10-01",
-      CustomerService: 0.8,
+      CustomerService: null,
       ProductQuality: 0.7,
       Delivery: 0.8,
     },
     {
       date: "2023-11-01",
-      CustomerService: 0.9,
+      CustomerService: null,
       ProductQuality: 0.8,
       Delivery: 0.7,
     },

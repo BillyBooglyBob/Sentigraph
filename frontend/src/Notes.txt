@@ -1,5 +1,9 @@
 - Comparison charts
 
+Chart
+- API send data for every single day for a time range
+- Frontend manipulates for the timeframe (such as imputation & aggregation/MA)
+
 
 Backend:
 - Store data efficiently

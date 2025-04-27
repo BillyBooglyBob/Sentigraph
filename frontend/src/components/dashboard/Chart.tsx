@@ -15,6 +15,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useState } from "react";
 
 interface ChartProps {
   data: any[]; // Array of data
@@ -26,9 +34,6 @@ interface ChartProps {
 
 const Chart = ({ data, labels, colors, title, description }: ChartProps) => {
   // Dynamically generate the chartConfig based on labels and colors
-  console.log("Chart data:", data);
-  console.log("Chart labels:", labels);
-
   const chartConfig = Object.fromEntries(
     labels.map((label, index) => [
       label.toLowerCase().replace(/\s+/g, ""),
@@ -38,17 +43,70 @@ const Chart = ({ data, labels, colors, title, description }: ChartProps) => {
       },
     ])
   ) satisfies ChartConfig;
+
+  const [timeRange, setTimeRange] = useState("90d");
+  const latestDate = new Date(data[data.length - 1].date);
+
+  const filteredData = data.filter((item) => {
+    const date = new Date(item.date);
+    const referenceDate = latestDate;
+    let daysToSubtract = 90;
+
+    if (timeRange === "7d") {
+      daysToSubtract = 7;
+    } else if (timeRange === "30d") {
+      daysToSubtract = 30;
+    } else if (timeRange === "90d") {
+      daysToSubtract = 90;
+    } else if (timeRange === "1y") {
+      daysToSubtract = 365;
+    } else if (timeRange === "3y") {
+      daysToSubtract = 3 * 365;
+    }
+
+    const startDate = new Date(referenceDate);
+    startDate.setDate(startDate.getDate() - daysToSubtract);
+    return date >= startDate;
+  });
+
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+      <CardHeader className="flex items-center">
+        <div>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+        </div>
+        <Select value={timeRange} onValueChange={setTimeRange}>
+          <SelectTrigger
+            className="w-[160px] rounded-lg sm:ml-auto"
+            aria-label="Select a value"
+          >
+            <SelectValue placeholder="Last 3 months" />
+          </SelectTrigger>
+          <SelectContent className="rounded-xl">
+            <SelectItem value="3y" className="rounded-lg">
+              Last 3 years
+            </SelectItem>
+            <SelectItem value="1y" className="rounded-lg">
+              Last 1 year
+            </SelectItem>
+            <SelectItem value="90d" className="rounded-lg">
+              Last 3 months
+            </SelectItem>
+            <SelectItem value="30d" className="rounded-lg">
+              Last 30 days
+            </SelectItem>
+            <SelectItem value="7d" className="rounded-lg">
+              Last 7 days
+            </SelectItem>
+          </SelectContent>
+        </Select>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <LineChart
             accessibilityLayer
-            data={data}
+            data={filteredData}
             margin={{
               right: 20,
             }}
