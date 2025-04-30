@@ -1,0 +1,76 @@
+Activate/deactivate venv environment for Python backend
+- source venv/bin/activate
+- deactivate
+
+- Comparison charts
+
+Chart
+- API send data for every single day for a time range
+- Frontend manipulates for the timeframe (such as imputation & aggregation/MA)
+
+
+Backend:
+Development:
+- inside backend directory
+- docker-compose up -d to run the containers
+
+- Store data efficiently
+- Create the schema
+- Decide where to have the caching
+- Use docker to develop and deploy, easier
+
+Sentiment
+- API needs to provide all the data in one go. 
+
+Auth
+
+Admin
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- Set up django backend
+- Run django in docker
+- Set up PostgreSQL with mocked data (real data later since too big)
+- Create DB schema
+- Sentiment API
+  - All data for a company
+    - # listings
+    - Overall sentiment
+  - Sentiment algorithm
+  - Sentiment analysis on an aspect of the company
+    - Perform analysis, check if aspect for company already exists
+    - Also saving the result for future reference
+  - Merge data for multiple aspects
+  - Merge data for multiple companies
+- Integrate with frontend
+  - companies/[id]
+  - companies-comparison
+- Auth
+  - User schema (with role/permission)
+  - API
+    - register 
+      - JWT token
+      - password encryption
+    - login
+    - add/remove companies
+- Admin
+  - API
+    - Permission check (user is admin)
+    - Return all users
+    - CRUD operations
+
+
+
+
+
