@@ -4,6 +4,8 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db import models
 
+from sentiment.models import Company
+
 
 class CustomUserManager(UserManager):
     def _create_user(self, username, email, password, **extra_fields):
@@ -49,6 +51,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=255)
     avatar = models.ImageField(upload_to="uploads/avatars/", blank=True, null=True)
 
+    companies = models.ManyToManyField(Company, related_name="followers")
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -63,7 +67,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Define fields to be used for authentication
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
-    REQUIRED_FIELDS = ["name"]
+    REQUIRED_FIELDS = ["username"]
 
     def __str__(self):
         return self.email

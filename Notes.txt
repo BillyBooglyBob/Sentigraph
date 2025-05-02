@@ -26,6 +26,13 @@ Development:
 
 Sentiment
 - API needs to provide all the data in one go. 
+- date in format "90d", need to make relevant change to frontend
+  - it can only select last 90d and what not, 90d from when is based
+  on the data.
+
+- Learn how to load dataset into database
+- Verify data date range so we can at least do some analysis
+- Do a small chunk first
 
 Auth
 
