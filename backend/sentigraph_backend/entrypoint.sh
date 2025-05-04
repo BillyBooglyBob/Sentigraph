@@ -14,4 +14,10 @@ fi
 python manage.py makemigrations
 python manage.py migrate
 
+# Loads the data
+# - runs after migrations to ensure
+#   - the database schema is up to date
+#   - the required tables exist
+python manage.py load_tweets
+
 exec "$@"

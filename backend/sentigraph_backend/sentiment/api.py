@@ -18,7 +18,23 @@ from rest_framework.decorators import (
 from .models import Aspect, ClassifiedTweet, Company, CompanyAspectSentiment, RawTweet
 from .serializers import (
     CompanySerializer,
+    RawTweetSerializer,
 )
+
+@api_view(["GET"])
+@authentication_classes([])
+@permission_classes([])
+def get_raw_tweet_data(request):
+    tweets = RawTweet.objects.all()
+    serializer = RawTweetSerializer(tweets, many=True)
+    
+    return JsonResponse(
+        {
+            "count": len(tweets),
+            "data": serializer.data,
+        }
+    )
+    
 
 
 @api_view(["GET"])

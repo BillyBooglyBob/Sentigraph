@@ -2,12 +2,11 @@ Activate/deactivate venv environment for Python backend
 - source env/bin/activate
 - deactivate
 
+Frontend:
 - Comparison charts
-
 Chart
 - API send data for every single day for a time range
 - Frontend manipulates for the timeframe (such as imputation & aggregation/MA)
-
 
 Backend:
 Development:
@@ -17,6 +16,11 @@ Development:
 - give permission to save
   - docker-compose exec web bash
   - chown -R 1000:1000 /usr/src/sentigraph_backend/
+
+- install new dependencies, need to rebuild
+  - docker-compose up --build
+- made changes to files, need to migrate (can do so with entrypoint.sh)
+  - docker-compose up -d
 
 
 - Store data efficiently
@@ -29,6 +33,7 @@ Sentiment
 - date in format "90d", need to make relevant change to frontend
   - it can only select last 90d and what not, 90d from when is based
   on the data.
+- 
 
 - Learn how to load dataset into database
 - Verify data date range so we can at least do some analysis

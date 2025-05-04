@@ -2,7 +2,7 @@
 # so it can be sent via API
 
 from rest_framework import serializers
-from .models import Company, CompanyAspectSentiment
+from .models import Company, CompanyAspectSentiment, RawTweet
 
 
 """ 
@@ -11,6 +11,10 @@ TODO:
 - How many users follow the company
 
 """
+class RawTweetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RawTweet
+        fields = ["id", "text", "date"]
 
 
 class CompanySerializer(serializers.ModelSerializer):
