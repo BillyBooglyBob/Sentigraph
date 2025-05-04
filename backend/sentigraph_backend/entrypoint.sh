@@ -11,7 +11,9 @@ then
   echo "Database is running"
 fi
 
+echo "Making migrations"
 python manage.py makemigrations
+echo "Applying migrations"
 python manage.py migrate
 
 # Loads the data

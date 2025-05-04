@@ -39,6 +39,16 @@ Sentiment
 - Verify data date range so we can at least do some analysis
 - Do a small chunk first
 
+- sentiment api not working, how to solve
+  - Check sentiment analysis is being done
+  - Find where the error occurred (possible location is date equality check)
+
+- Need to reset database since many cached data are wrong
+- Frontend intergration
+  - Date range selection change
+  - Aspect & Multiple companies setup, a selector is missing (I think its aspect)
+  - Redux setup (redux query)
+
 Auth
 
 Admin

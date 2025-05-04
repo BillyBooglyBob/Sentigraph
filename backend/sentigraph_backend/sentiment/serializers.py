@@ -11,6 +11,9 @@ TODO:
 - How many users follow the company
 
 """
+
+
+# Test API to get all tweets
 class RawTweetSerializer(serializers.ModelSerializer):
     class Meta:
         model = RawTweet

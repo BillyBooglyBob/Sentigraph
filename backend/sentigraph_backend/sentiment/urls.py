@@ -12,6 +12,7 @@ urlpatterns = [
         api.get_aspect_company_sentiment,
         name="get_aspect_company_sentiment",
     ),
+    # Test API to get all tweets
     path("tweets", api.get_raw_tweet_data, name="get_raw_tweet_data"),
 ]
 
