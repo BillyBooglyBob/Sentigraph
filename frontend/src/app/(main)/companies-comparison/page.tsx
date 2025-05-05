@@ -1,31 +1,45 @@
 "use client";
 
-import { useState, use } from "react";
+import { useState, use, useEffect } from "react";
 import Chart from "@/components/dashboard/Chart";
 import CompaniesSelector from "@/components/dashboard/selector/CompanySelector";
+import AspectSelector from "@/components/dashboard/selector/AspectSelector";
 import BackButton from "@/components/BackButton";
 import { useSentimentData } from "@/hooks/useSentimentData";
-import { Loader2 } from "lucide-react";
 import { formatSentimentString } from "@/lib/formatter";
-import AspectSelector from "@/components/dashboard/selector/AspectSelector";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
-interface CompanyComparisonPageProps {
-  params: Promise<{ id: string }>;
-}
+const CompanyComparisonPage = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
-/* TODO: Deal with the caching, so when companies changed, 
-already gotten companies don't need to be retrieved again. 
-
-- Have the companies in the state be part of the URL as well.
-*/
-const CompanyComparisonPage = ({ params }: CompanyComparisonPageProps) => {
-  // Get data for the current user by looking up the ID in the URL
-  const { id: companyId } = use(params);
+  // Get the companies and aspects from the URL
+  // - Will be used to set the initial state of the companies and aspects
+  const urlCompanies = searchParams.get("companies")?.split(",") || [];
+  const urlAspects = searchParams.get("aspects")?.split(",") || [];
 
   // Fetch the sentiment data based on the companies and aspect selected
-  const [companies, setCompanies] = useState<string[]>([]);
-  const [aspects, setAspects] = useState<string[]>([]);
+  const [companies, setCompanies] = useState<string[]>(urlCompanies);
+  const [aspects, setAspects] = useState<string[]>(urlAspects);
 
+  // Update the URL when the companies or aspects change
+  useEffect(() => {
+    const params = new URLSearchParams();
+
+    if (companies.length > 0) {
+      params.set("companies", companies.join(","));
+    }
+
+    if (aspects.length > 0) {
+      params.set("aspects", aspects.join(","));
+    }
+
+    router.replace(`${pathname}?${params.toString()}`);
+  }, [companies, aspects]);
+
+  // Fetch the sentiment data based on the companies and aspect selected
   const {
     data: sentimentData,
     isLoading,
@@ -39,7 +53,7 @@ const CompanyComparisonPage = ({ params }: CompanyComparisonPageProps) => {
   return (
     <div className="flex flex-col gap-4">
       <BackButton text="Go Back" link="/" />
-      <h1>Sentiment for {companyId}</h1>
+      <h1>Sentiment analysis for companies</h1>
 
       <div className="flex gap-6">
         <CompaniesSelector
@@ -49,10 +63,10 @@ const CompanyComparisonPage = ({ params }: CompanyComparisonPageProps) => {
         <AspectSelector aspects={aspects} handleAspectsChange={setAspects} />
       </div>
 
-      {companies.length === 0 ? (
+      {companies.length === 0 || aspects.length === 0 ? (
         <div className="flex items-center justify-center h-64">
           <p className="text-muted-foreground">
-            Please select at least one company.
+            Please select at least one company and one aspect.
           </p>
         </div>
       ) : isLoading ? (
