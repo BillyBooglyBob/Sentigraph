@@ -17,6 +17,7 @@ const AspectSelector = ({
     <Selector
       label="aspect"
       selectors={aspects}
+      limit={1}
       handleSelectorChange={handleAspectsChange}
     />
   );

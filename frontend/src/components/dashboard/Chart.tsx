@@ -24,22 +24,30 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 
+interface SentimentDataPoint {
+  date: string; // Date in YYYY-MM-DD format
+  [company: string]: number | string; // Company name as key and sentiment score as value
+}
+
 interface ChartProps {
-  data: any[]; // Array of data
+  data: SentimentDataPoint[]; // Array of data (e.g. [{date: "2023-01-01", Amazon: 0.8, Facebook: 0.6}])
   labels: string[]; // Labels for each line (e.g., "Customer Service", "Product Quality")
-  colors: string[]; // Colors to use for the lines
   title: string; // Title of the chart
   description: string; // Description of the chart
 }
 
-const Chart = ({ data, labels, colors, title, description }: ChartProps) => {
+// Default colors for the chart lines:
+// blue, green, amber
+const defaultLabelColors = ["#3b82f6", "#10b981", "#f59e0b"];
+
+const Chart = ({ data, labels, title, description }: ChartProps) => {
   // Dynamically generate the chartConfig based on labels and colors
   const chartConfig = Object.fromEntries(
     labels.map((label, index) => [
       label.toLowerCase().replace(/\s+/g, ""),
       {
         label,
-        color: colors[index],
+        color: defaultLabelColors[index],
       },
     ])
   ) satisfies ChartConfig;
@@ -58,10 +66,6 @@ const Chart = ({ data, labels, colors, title, description }: ChartProps) => {
       daysToSubtract = 30;
     } else if (timeRange === "90d") {
       daysToSubtract = 90;
-    } else if (timeRange === "1y") {
-      daysToSubtract = 365;
-    } else if (timeRange === "3y") {
-      daysToSubtract = 3 * 365;
     }
 
     const startDate = new Date(referenceDate);
@@ -71,7 +75,7 @@ const Chart = ({ data, labels, colors, title, description }: ChartProps) => {
 
   return (
     <Card>
-      <CardHeader className="flex items-center">
+      <CardHeader className="flex items-center justify-between">
         <div>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
@@ -84,13 +88,7 @@ const Chart = ({ data, labels, colors, title, description }: ChartProps) => {
             <SelectValue placeholder="Last 3 months" />
           </SelectTrigger>
           <SelectContent className="rounded-xl">
-            <SelectItem value="3y" className="rounded-lg">
-              Last 3 years
-            </SelectItem>
-            <SelectItem value="1y" className="rounded-lg">
-              Last 1 year
-            </SelectItem>
-            <SelectItem value="90d" className="rounded-lg">
+            <SelectItem value="90d" className="rounded-lg default:">
               Last 3 months
             </SelectItem>
             <SelectItem value="30d" className="rounded-lg">
@@ -126,7 +124,7 @@ const Chart = ({ data, labels, colors, title, description }: ChartProps) => {
                 dataKey={label.replace(/\s+/g, "")}
                 type="monotone"
                 strokeWidth={2}
-                stroke={colors[index]}
+                stroke={defaultLabelColors[index]}
                 dot={true}
               />
             ))}

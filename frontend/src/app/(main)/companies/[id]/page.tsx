@@ -106,7 +106,7 @@ const CompanyPage = ({ params }: CompanyPageProps) => {
       Delivery: 0.7,
     },
   ];
-  const colors = ["#3b82f6", "#10b981", "#f59e0b"]; // blue, green, amber
+
   const labels = ["Customer Service", "Product Quality", "Delivery"];
 
   return (
@@ -119,7 +119,6 @@ const CompanyPage = ({ params }: CompanyPageProps) => {
       <Chart
         data={data}
         labels={labels}
-        colors={colors}
         title="Sentiment for Amazon"
         description={labels.join(", ")}
       />

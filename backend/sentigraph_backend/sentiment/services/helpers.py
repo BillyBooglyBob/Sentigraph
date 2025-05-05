@@ -36,29 +36,17 @@ def ensure_company_aspect_sentiment(company_obj, aspect_name):
     """
     aspect_obj = Aspect.objects.get(name=aspect_name)
 
-    # if not CompanyAspectSentiment.objects.filter(
-    #     company=company_obj, aspect=aspect_obj
-    # ).exists():
-    #     company_tweets = ClassifiedTweet.objects.filter(company=company_obj)
-    #     for tweet in company_tweets:
-    #         result = get_sentiment_for_aspect(tweet.text, aspect_name)
-    #         CompanyAspectSentiment.objects.create(
-    #             tweet=tweet,
-    #             company=company_obj,
-    #             aspect=aspect_obj,
-    #             date=tweet.date,
-    #             sentiment_label=result["label"],
-    #             sentiment_score=result["score"],
-    #         )
-
-    company_tweets = ClassifiedTweet.objects.filter(company=company_obj)
-    for tweet in company_tweets:
-        result = get_sentiment_for_aspect(tweet.text, aspect_name)
-        CompanyAspectSentiment.objects.create(
-            tweet=tweet,
-            company=company_obj,
-            aspect=aspect_obj,
-            date=tweet.date,
-            sentiment_label=result["label"],
-            sentiment_score=result["score"],
-        )
+    if not CompanyAspectSentiment.objects.filter(
+        company=company_obj, aspect=aspect_obj
+    ).exists():
+        company_tweets = ClassifiedTweet.objects.filter(company=company_obj)
+        for tweet in company_tweets:
+            result = get_sentiment_for_aspect(tweet.text, aspect_name)
+            CompanyAspectSentiment.objects.create(
+                tweet=tweet,
+                company=company_obj,
+                aspect=aspect_obj,
+                date=tweet.date,
+                sentiment_label=result["label"],
+                sentiment_score=result["score"],
+            )

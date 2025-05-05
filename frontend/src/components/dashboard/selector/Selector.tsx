@@ -36,6 +36,7 @@ const formSchema = z.object({
 interface SelectorProps {
   label: string;
   selectors: string[];
+  limit?: number;
   handleSelectorChange: (
     selectedOrUpdater: string[] | ((prev: string[]) => string[])
   ) => void;
@@ -44,6 +45,7 @@ interface SelectorProps {
 const Selector = ({
   label,
   selectors,
+  limit,
   handleSelectorChange,
 }: SelectorProps) => {
   const pluralLabel = pluralize(label);
@@ -76,9 +78,10 @@ const Selector = ({
     // If selector already exists, show error
     if (selectors.includes(data.selector)) {
       toast.error(`${label} already exists`);
-    } else if (selectors.length >= 3) {
-      // If there are already 3 selectors, show error
-      toast.error(`You can only add up to 3 ${pluralLabel}`);
+    } else if (limit && selectors.length >= limit) {
+      // If there is a limit to the no. of selectors and
+      // the limit is reached - show error
+      toast.error(`You can only add up to ${limit} ${pluralLabel}`);
     } else {
       // Add the new selector to the list
       handleSelectorChange((prev: string[]) => [...prev, data.selector]);

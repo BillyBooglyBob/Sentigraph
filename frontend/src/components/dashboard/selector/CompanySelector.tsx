@@ -16,6 +16,7 @@ const CompaniesSelector = ({
   return (
     <Selector
       label="company"
+      limit={3}
       selectors={companies}
       handleSelectorChange={handleCompaniesChange}
     />

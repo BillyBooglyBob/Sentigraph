@@ -54,6 +54,8 @@ Sentiment
   - Aspect & Multiple companies setup, a selector is missing (I think its aspect)
   - Redux setup (redux query)
 
+- reinstate check cache for sentiment api search after all the testing are good
+
 Auth
 
 Admin
