@@ -79,8 +79,6 @@ INSTALLED_APPS = [
     "dj_rest_auth.registration",
     # Allow cross-origin requests (e.g. from the frontend)
     "corsheaders",
-    # For loading dataset
-    # "kagglehub",
     # Apps for the project
     "useraccount",
     "sentiment",

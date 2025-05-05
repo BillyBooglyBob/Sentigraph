@@ -63,16 +63,18 @@ def get_company(request, company):
 @api_view(["GET"])
 @authentication_classes([])
 @permission_classes([])
-def get_aspect_company_sentiment(request, aspect, timeframe):
+def get_aspect_company_sentiment(request):
     """
     Get sentiment for a specific aspect for a list of companies
     - aspect: the aspect to analyze
     - timeframe: the time range for the analysis (e.g. "90d")
     - companies: a list of company names
     """
+    aspect_name = request.GET.get("aspect")
+    timeframe = request.GET.get("timeframe")
     company_names = request.GET.getlist("companies")
-    if not company_names:
-        return JsonResponse({"error": "Missing companies parameter"}, status=400)
+    if not aspect_name or not company_names or not timeframe:
+        return JsonResponse({"error": "Missing required query parameters"}, status=400)
 
-    data = get_company_aspect_sentiment_data(aspect, timeframe, company_names)
+    data = get_company_aspect_sentiment_data(aspect_name, timeframe, company_names)
     return JsonResponse(data)

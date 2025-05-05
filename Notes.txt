@@ -2,6 +2,11 @@ Activate/deactivate venv environment for Python backend
 - source env/bin/activate
 - deactivate
 
+Superuser:
+- Email: bobbyBob@gmail.com
+- Username: Bobby Bob
+- Password: BreakingPrice
+
 Frontend:
 - Comparison charts
 Chart

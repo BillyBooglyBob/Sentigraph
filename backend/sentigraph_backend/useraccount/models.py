@@ -16,7 +16,7 @@ class CustomUserManager(UserManager):
             raise ValueError("You have not specified a valid email address.")
 
         email = self.normalize_email(email)
-        user = self.model(email=email, name=username, **extra_fields)
+        user = self.model(email=email, username=username, **extra_fields)
         user.set_password(password)  # Automatically hashes the password
         user.save(using=self.db)
 

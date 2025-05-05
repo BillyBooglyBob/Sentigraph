@@ -8,7 +8,7 @@ from . import api
 urlpatterns = [
     path("company/<str:company>/", api.get_company, name="get_company"),
     path(
-        "aspect/<str:aspect>/<str:timeframe>/",
+        "sentiments/",
         api.get_aspect_company_sentiment,
         name="get_aspect_company_sentiment",
     ),
