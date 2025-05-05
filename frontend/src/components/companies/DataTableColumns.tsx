@@ -89,7 +89,7 @@ export const CompanyDataTableColumns: ColumnDef<Company>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => router.push(`/companies/${company.id}`)}
+              onClick={() => router.push(`/companies/${company.name}`)}
             >
               View Company
             </DropdownMenuItem>
