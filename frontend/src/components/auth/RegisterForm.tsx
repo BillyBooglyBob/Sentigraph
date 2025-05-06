@@ -23,11 +23,9 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const formSchema = z.object({
-  username: z.string().min(1, {
-    message: "Username is required",
-  }),
   email: z.string().email({ message: "Please enter a valid email" }).min(1, {
     message: "Email is required",
   }),
@@ -43,11 +41,13 @@ const RegisterForm = () => {
   // For redirecting to another page after login
   const router = useRouter();
 
+  // For sending register request to the server
+  const { register } = useAuth();
+
   // Define form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -59,6 +59,12 @@ const RegisterForm = () => {
 
   // Handle form submission
   const handleSubmit = (data: z.infer<typeof formSchema>) => {
+    register.mutate({
+      email: data.email,
+      password1: data.password,
+      password2: data.confirmPassword,
+    });
+
     router.push("/");
   };
 
@@ -74,28 +80,6 @@ const RegisterForm = () => {
             onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-6"
           >
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white">
-                    Username
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      className="bg-slate-100 dark:bg-slate-500 border-0 
-                    focus-visible:ring-0 text-black dark:text-white 
-                    focus-visible:ring-offset-0"
-                      placeholder="Enter the username"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="email"

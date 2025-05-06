@@ -14,7 +14,9 @@ export async function fetchSentimentData({
 
   /* TODO: Replace local host with something else when deploying */
   const res = await fetch(
-    `http://localhost:8000/api/sentiments/?${params.toString()}`
+    `${
+      process.env.NEXT_PUBLIC_API_HOST
+    }/api/sentiment/sentiments/?${params.toString()}`
   );
 
   if (!res.ok) throw new Error("Failed to fetch sentiment data");

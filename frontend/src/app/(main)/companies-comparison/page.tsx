@@ -5,7 +5,7 @@ import SentimentChartPage from "@/components/dashboard/SentimentChartPage";
 const CompanyComparisonPage = () => {
   return (
     <SentimentChartPage
-      heading="Companies Sentimetn Comparison"
+      heading="Companies Sentiment Comparison"
       backLink="/"
       showCompanySelector={true}
     />

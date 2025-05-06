@@ -2,18 +2,18 @@ Activate/deactivate venv environment for Python backend
 - source env/bin/activate
 - deactivate
 
+FRONTEND:
+- Comparison charts
+- Chart
+  - API send data for every single day for a time range
+  - Frontend manipulates for the timeframe (such as imputation & aggregation/MA)`
+
+BACKEND:
 Superuser:
 - Email: bobbyBob@gmail.com
 - Username: Bobby Bob
 - Password: BreakingPrice
 
-Frontend:
-- Comparison charts
-Chart
-- API send data for every single day for a time range
-- Frontend manipulates for the timeframe (such as imputation & aggregation/MA)
-
-Backend:
 Development:
 - inside backend directory
 - docker-compose up -d to run the containers
@@ -28,37 +28,42 @@ Development:
   - docker-compose up -d
 
 
-- Store data efficiently
-- Create the schema
-- Decide where to have the caching
-- Use docker to develop and deploy, easier
-
 Sentiment
 - API needs to provide all the data in one go. 
 - date in format "90d", need to make relevant change to frontend
   - it can only select last 90d and what not, 90d from when is based
   on the data.
-- 
-
 - Learn how to load dataset into database
 - Verify data date range so we can at least do some analysis
 - Do a small chunk first
-
 - sentiment api not working, how to solve
   - Check sentiment analysis is being done
   - Find where the error occurred (possible location is date equality check)
-
 - Need to reset database since many cached data are wrong
 - Frontend intergration
   - Date range selection change
   - Aspect & Multiple companies setup, a selector is missing (I think its aspect)
   - Redux setup (redux query)
-
 - reinstate check cache for sentiment api search after all the testing are good
 
 Auth
+- user register, login and logout
+- connect to frontend
+  - Use Tanstack for request
+    - Remove username from all requests
+  - Setup Redux to use auth data in multiple locations
+    - use login state to change register/logout in the profile
+    - use permission to hide admin section of navbar
+- user's personal list of companies tracked
+  - support CRUD operations
+
+- test users:
+  - email: a@gmail.com, password: abcABC11
 
 Admin
+- admin data
+- CRUD
+- connect to frontend
 
 
 
