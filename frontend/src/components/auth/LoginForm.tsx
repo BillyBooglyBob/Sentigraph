@@ -23,6 +23,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email" }).min(1, {
@@ -36,6 +37,9 @@ const formSchema = z.object({
 const LoginForm = () => {
   // For redirecting to another page after login
   const router = useRouter();
+
+  // For sending login request to the server
+  const { login } = useAuth();
 
   // Define form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -51,6 +55,11 @@ const LoginForm = () => {
 
   // Handle form submission
   const handleSubmit = (data: z.infer<typeof formSchema>) => {
+    login.mutate({
+      email: data.email,
+      password: data.password,
+    });
+
     router.push("/");
   };
 

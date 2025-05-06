@@ -29,14 +29,10 @@ export async function registerUser(data: {
     // Check if the content type is JSON before parsing
     if (contentType && contentType.includes("application/json")) {
       const resData = await res.json();
-      console.log("Response Data:", resData); // Log the successful response
+      // console.log("Response Data:", resData); // Log the successful response
 
       // Save the userId and tokens in cookies
-      handleLogin(
-        resData.user.pk,
-        resData.access,
-        resData.refresh
-      );
+      handleLogin(resData.user.pk, resData.access, resData.refresh);
 
       return resData; // Return the response data, e.g., { access, refresh, user }
     }
@@ -61,9 +57,35 @@ export async function loginUser(data: { email: string; password: string }) {
       // credentials: "include",
     }
   );
-  if (!res.ok) throw new Error("Login failed");
-  const resData = await res.json();
-  return resData;
+  // Check if the response is not OK
+  if (!res.ok) {
+    const errorData = await res.json();
+    console.error("Login failed:", errorData);
+    throw new Error(errorData?.non_field_errors?.[0] || "Login failed");
+  }
+
+  // Now, handle the successful response and extract the data
+  try {
+    const contentType = res.headers.get("content-type");
+
+    // Check if the content type is JSON before parsing
+    if (contentType && contentType.includes("application/json")) {
+      const resData = await res.json();
+      // console.log("Response Data:", resData); // Log the successful response
+
+      // Save the userId and tokens in cookies
+      handleLogin(resData.user.pk, resData.access, resData.refresh);
+
+      return resData; // Return the response data, e.g., { access, refresh, user }
+    }
+
+    // In case the response isn't JSON, return null or some other fallback
+    console.warn("Response isn't JSON:", contentType);
+    return null;
+  } catch (err) {
+    console.error("Error parsing response:", err);
+    return null; // Return null in case of any errors
+  }
 }
 
 export async function logoutUser() {
