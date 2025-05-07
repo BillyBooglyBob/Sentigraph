@@ -58,14 +58,18 @@ const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   // Handle form submission
-  const handleSubmit = (data: z.infer<typeof formSchema>) => {
-    register.mutate({
-      email: data.email,
-      password1: data.password,
-      password2: data.confirmPassword,
-    });
+  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      await register.mutateAsync({
+        email: data.email,
+        password1: data.password,
+        password2: data.confirmPassword,
+      });
 
-    router.push("/");
+      router.push("/");
+    } catch (error) {
+      console.error("Register failed:", error);
+    }
   };
 
   return (

@@ -54,13 +54,17 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   // Handle form submission
-  const handleSubmit = (data: z.infer<typeof formSchema>) => {
-    login.mutate({
-      email: data.email,
-      password: data.password,
-    });
+  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      await login.mutateAsync({
+        email: data.email,
+        password: data.password,
+      });
 
-    router.push("/");
+      router.push("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (

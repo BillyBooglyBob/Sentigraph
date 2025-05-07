@@ -1,4 +1,4 @@
-import { handleLogin } from "../action";
+import { handleLoginAddCookies, handleLogOutClearCookies } from "../action";
 
 export async function registerUser(data: {
   email: string;
@@ -32,7 +32,7 @@ export async function registerUser(data: {
       // console.log("Response Data:", resData); // Log the successful response
 
       // Save the userId and tokens in cookies
-      handleLogin(resData.user.pk, resData.access, resData.refresh);
+      handleLoginAddCookies(resData.user.pk, resData.access, resData.refresh);
 
       return resData; // Return the response data, e.g., { access, refresh, user }
     }
@@ -74,7 +74,7 @@ export async function loginUser(data: { email: string; password: string }) {
       // console.log("Response Data:", resData); // Log the successful response
 
       // Save the userId and tokens in cookies
-      handleLogin(resData.user.pk, resData.access, resData.refresh);
+      handleLoginAddCookies(resData.user.pk, resData.access, resData.refresh);
 
       return resData; // Return the response data, e.g., { access, refresh, user }
     }
@@ -99,5 +99,7 @@ export async function logoutUser() {
   );
   if (!res.ok) throw new Error("Logout failed");
   const resData = await res.json();
+  handleLogOutClearCookies(); // Clear the cookies on logout
+  console.log("Logout Response Data:", resData); // Log the successful response
   return resData;
 }

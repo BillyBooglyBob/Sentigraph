@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import logo from "../../public/images/logo.png";
@@ -11,8 +13,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ThemeToggler from "@/components/ThemeToggler";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 
 const Navbar = () => {
+  const router = useRouter();
+  const { logout } = useAuth();
+  const handleLogout = async () => {
+    try {
+      await logout.mutateAsync();
+      router.push("/auth");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <div className="flex sticky top-0 z-10 w-full h-[--header-height] bg-primary dark:bg-slate-700 py-4 px-5 justify-between text-white">
       <Link href="/">
@@ -37,9 +52,7 @@ const Navbar = () => {
             <DropdownMenuItem>
               <Link href="/profile">Profile</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link href="/auth">Log out</Link>
-            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

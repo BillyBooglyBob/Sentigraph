@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-export async function handleLogin(
+export async function handleLoginAddCookies(
   userId: string,
   accessToken: string,
   refreshToken: string
@@ -38,4 +38,13 @@ export async function handleLogin(
     maxAge: 60 * 60 * 24 * 7,
     path: "/",
   });
+}
+
+export async function handleLogOutClearCookies() {
+  /* Delete the cookies when user logs out */
+  const cookieStore = await cookies();
+
+  cookieStore.delete("session_userid");
+  cookieStore.delete("session_access_token");
+  cookieStore.delete("session_refresh_token");
 }
