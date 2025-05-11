@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
+import { Provider } from "react-redux"
+import { store } from "@/redux/store";
 
 export default function ClientLayout({
   children,
@@ -15,15 +17,17 @@ export default function ClientLayout({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        storageKey="dashboard-theme"
-      >
-        {children}
-        <Toaster />
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          storageKey="dashboard-theme"
+        >
+          {children}
+          <Toaster />
+        </ThemeProvider>
+      </Provider>
       <ReactQueryDevtools />
     </QueryClientProvider>
   );

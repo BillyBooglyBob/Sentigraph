@@ -24,6 +24,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useAppDispatch } from "@/redux/hook";
+import { setUser } from "@/redux/slices/user";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email" }).min(1, {
@@ -39,7 +41,10 @@ const LoginForm = () => {
   const router = useRouter();
 
   // For sending login request to the server
-  const { login } = useAuth();
+  const { login, getUserInFo } = useAuth();
+
+  // Redux state
+  const dispatch = useAppDispatch();
 
   // Define form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -60,6 +65,23 @@ const LoginForm = () => {
         email: data.email,
         password: data.password,
       });
+
+      // Save user data in redux
+      const userInfo = await getUserInFo.mutateAsync({
+        email: data.email,
+      });
+
+      console.log(userInfo)
+
+      dispatch(
+        setUser({
+          id: userInfo.data.id,
+          email: userInfo.data.email,
+          is_staff: userInfo.data.is_staff,
+          is_superuser: userInfo.data.is_superuser,
+          companies: userInfo.data.companies,
+        })
+      );
 
       router.push("/");
     } catch (error) {
