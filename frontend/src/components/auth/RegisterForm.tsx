@@ -24,6 +24,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useAppDispatch } from "@/redux/hook";
+import { setUser } from "@/redux/slices/user";
+import { getUserInformation } from "@/lib/queries/auth";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email" }).min(1, {
@@ -43,6 +46,9 @@ const RegisterForm = () => {
 
   // For sending register request to the server
   const { register } = useAuth();
+
+  // Redux state
+  const dispatch = useAppDispatch();
 
   // Define form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -65,6 +71,19 @@ const RegisterForm = () => {
         password1: data.password,
         password2: data.confirmPassword,
       });
+
+      // Retrieve and save user data in redux
+      const userInfo = await getUserInformation({ email: data.email });
+
+      dispatch(
+        setUser({
+          id: userInfo.data.id,
+          email: userInfo.data.email,
+          is_staff: userInfo.data.is_staff,
+          is_superuser: userInfo.data.is_superuser,
+          companies: userInfo.data.companies,
+        })
+      );
 
       router.push("/");
     } catch (error) {
@@ -168,7 +187,14 @@ const RegisterForm = () => {
                 </FormItem>
               )}
             />
-
+            {register.error && (
+              <p className="text-red-500 text-sm">
+                {(register.error as any)?.email?.[0] ||
+                  (register.error as any)?.password1?.[0] ||
+                  (register.error as any)?.non_field_errors?.[0] ||
+                  "Registration failed."}
+              </p>
+            )}
             <Button className="w-full">Sign Up</Button>
           </form>
         </Form>

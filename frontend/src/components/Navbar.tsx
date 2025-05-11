@@ -15,13 +15,22 @@ import {
 import ThemeToggler from "@/components/ThemeToggler";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { clearUser } from "@/redux/slices/user";
 
 const Navbar = () => {
+  const user = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+
   const router = useRouter();
   const { logout } = useAuth();
   const handleLogout = async () => {
     try {
       await logout.mutateAsync();
+
+      // Clear user state in Redux store
+      dispatch(clearUser());
+
       router.push("/auth");
     } catch (error) {
       console.error("Logout failed:", error);
@@ -49,10 +58,23 @@ const Navbar = () => {
           <DropdownMenuContent>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href="/profile">Profile</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
+            {/* Conditionally render menu depending on login status */}
+            {user.email ? (
+              <>
+                <DropdownMenuItem>
+                  <Link href="/profile">Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
+                  Log out
+                </DropdownMenuItem>
+              </>
+            ) : (
+              <>
+                <DropdownMenuItem>
+                  <Link href="/auth">Login/Register</Link>
+                </DropdownMenuItem>
+              </>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

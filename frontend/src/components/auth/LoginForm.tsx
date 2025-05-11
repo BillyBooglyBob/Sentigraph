@@ -26,6 +26,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAppDispatch } from "@/redux/hook";
 import { setUser } from "@/redux/slices/user";
+import { getUserInformation } from "@/lib/queries/auth";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email" }).min(1, {
@@ -41,7 +42,7 @@ const LoginForm = () => {
   const router = useRouter();
 
   // For sending login request to the server
-  const { login, getUserInFo } = useAuth();
+  const { login } = useAuth();
 
   // Redux state
   const dispatch = useAppDispatch();
@@ -66,12 +67,8 @@ const LoginForm = () => {
         password: data.password,
       });
 
-      // Save user data in redux
-      const userInfo = await getUserInFo.mutateAsync({
-        email: data.email,
-      });
-
-      console.log(userInfo)
+      // Retrieve and save user data in redux
+      const userInfo = await getUserInformation({ email: data.email });
 
       dispatch(
         setUser({
@@ -156,7 +153,14 @@ const LoginForm = () => {
                 </FormItem>
               )}
             />
-
+            {login.error && (
+              <p className="text-red-500 text-sm">
+                {(login.error as any)?.email?.[0] ||
+                  (login.error as any)?.password?.[0] ||
+                  (login.error as any)?.non_field_errors?.[0] ||
+                  "Login failed."}
+              </p>
+            )}
             <Button className="w-full">Login</Button>
           </form>
         </Form>

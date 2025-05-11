@@ -1,4 +1,8 @@
-import { handleLoginAddCookies, handleLogOutClearCookies } from "../action";
+import {
+  getTokenFromCookies,
+  handleLoginAddCookies,
+  handleLogOutClearCookies,
+} from "../action";
 
 /* 
 Only use (credentials: "include") if you need to send cookies with the request.
@@ -21,18 +25,14 @@ export async function registerUser(data: {
 
     if (!res.ok) {
       const errorData = await res.json();
-      console.error("Registration failed:", errorData);
-      throw new Error(
-        errorData?.non_field_errors?.[0] || "Registration failed"
-      );
+      throw errorData;
     }
 
     const resData = await res.json();
     handleLoginAddCookies(resData.user.pk, resData.access, resData.refresh);
     return resData;
   } catch (err) {
-    console.error("Error during registration:", err);
-    return null;
+    throw err;
   }
 }
 
@@ -49,16 +49,14 @@ export async function loginUser(data: { email: string; password: string }) {
 
     if (!res.ok) {
       const errorData = await res.json();
-      console.error("Login failed:", errorData);
-      throw new Error(errorData?.non_field_errors?.[0] || "Login failed");
+      throw errorData;
     }
 
     const resData = await res.json();
     handleLoginAddCookies(resData.user.pk, resData.access, resData.refresh);
     return resData;
   } catch (err) {
-    console.error("Error during login:", err);
-    return null;
+    throw err;
   }
 }
 
@@ -68,45 +66,47 @@ export async function logoutUser() {
       `${process.env.NEXT_PUBLIC_API_HOST}/api/auth/logout/`,
       {
         method: "POST",
-      }
-    );
-
-    if (!res.ok) {
-      const errorData = await res.json();
-      console.error("Logout failed:", errorData);
-      throw new Error("Logout failed");
-    }
-
-    const resData = await res.json();
-    handleLogOutClearCookies();
-    console.log("Logout successful:", resData);
-    return resData;
-  } catch (err) {
-    console.error("Error during logout:", err);
-    return null;
-  }
-}
-
-export async function getUserInformation(data: { email: string }) {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_HOST}/api/auth/user/${data.email}/`,
-      {
-        method: "GET",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // Only use if you need to send cookies
       }
     );
 
     if (!res.ok) {
-      const error = await res.json();
-      console.error("Server error:", error);
-      return null;
+      const errorData = await res.json();
+      throw errorData;
+    }
+
+    const resData = await res.json();
+    handleLogOutClearCookies();
+    return resData;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function getUserInformation(data: { email: string }) {
+  const { accessToken } = await getTokenFromCookies();
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/api/auth/user/${data.email}/`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken?.value}`, // Use the access token for authentication
+        },
+        credentials: "include", // Only use if you need to send cookies
+      }
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw errorData;
     }
 
     return await res.json();
   } catch (err) {
-    console.error("Network or parsing error:", err);
-    return null;
+    throw err;
   }
 }

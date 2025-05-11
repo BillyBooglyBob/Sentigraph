@@ -48,3 +48,19 @@ export async function handleLogOutClearCookies() {
   cookieStore.delete("session_access_token");
   cookieStore.delete("session_refresh_token");
 }
+
+export async function getTokenFromCookies() {
+  const cookieStore = await cookies();
+
+  // Fetch the tokens from cookies (they will be sent automatically in subsequent requests)
+  const accessToken = cookieStore.get("session_access_token");
+  const refreshToken = cookieStore.get("session_refresh_token");
+
+  console.log("Access Token:", accessToken);
+  console.log("Refresh Token:", refreshToken);
+
+  return {
+    accessToken,
+    refreshToken,
+  };
+}

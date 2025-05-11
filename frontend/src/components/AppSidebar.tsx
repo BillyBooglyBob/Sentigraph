@@ -1,17 +1,6 @@
 "use client";
 
-import {
-  Calendar,
-  Home,
-  Inbox,
-  Search,
-  LayoutDashboard,
-  Newspaper,
-  ChartArea,
-  Settings,
-  User,
-  Folder,
-} from "lucide-react";
+import { Home, Newspaper, ChartArea, User, Folder } from "lucide-react";
 
 import {
   Sidebar,
@@ -58,21 +47,31 @@ const items = {
     },
   ],
 };
-const groups = [
-  { label: "Main", items: items.main },
-  { label: "Admin", items: items.admin },
-  { label: "Profile", items: items.user },
-];
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAppSelector } from "@/redux/hook";
 
 const AppSidebar = () => {
   const pathname = usePathname();
 
+  // Get user information from Redux store.
+  const user = useAppSelector((state) => state.user);
+
+  // Function to check if the current path matches the menu item URL.
+  // This is used to highlight the active menu item.
   const isActive = (url: string) => {
-    return pathname === url
+    return pathname === url;
   };
+
+  // Menus to display, conditioned based on user role.
+  const groups = [
+    { label: "Main", items: items.main },
+    ...(user?.is_staff || user?.is_superuser
+      ? [{ label: "Admin", items: items.admin }]
+      : []),
+    { label: "Profile", items: items.user },
+  ];
 
   return (
     <Sidebar className="mt-20" variant="inset">

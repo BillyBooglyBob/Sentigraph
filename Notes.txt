@@ -11,7 +11,6 @@ FRONTEND:
 BACKEND:
 Superuser:
 - Email: bobbyBob@gmail.com
-- Username: Bobby Bob
 - Password: BreakingPrice
 
 Development:
