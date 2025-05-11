@@ -66,6 +66,8 @@ Auth
   6. Implement into code
 - user profile page (can modify the page)
 
+- Need bearer token in the request header else won't work.
+
 - test users:
   - email: a@gmail.com, password: abcABC11
 
