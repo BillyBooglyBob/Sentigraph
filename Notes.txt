@@ -54,16 +54,32 @@ Auth
   - Setup Redux to use auth data in multiple locations
     - use login state to change register/logout in the profile
     - use permission to hide admin section of navbar
+    1. Setup backend API to retrieve user info
+    2. Setup redux toolkit to store user info
+    3. Use permission for info hiding
 - user's personal list of companies tracked
   - support CRUD operations
+  1. Learn how to create the API to add companies to a particular user
+  2. Test API 
+  3. Implement into code
+  4. Learn how to delete
+  5. Test API
+  6. Implement into code
+- user profile page (can modify the page)
 
 - test users:
   - email: a@gmail.com, password: abcABC11
 
 Admin
-- admin data
-- CRUD
-- connect to frontend
+- CRUD operation on users
+  - read users (Only allow data for user with admin permission)
+  - create user
+  - delete user
+  - update user (need to implement profile page, will use same set of API)
+- Implement one operation at a time
+  - Implement in the backend
+  - Test API
+  - Connect to frontend
 
 
 
