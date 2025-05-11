@@ -31,16 +31,18 @@ import {
 } from "@tanstack/react-table";
 import Link from "next/link";
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends { id: string }, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   DataModal: React.FC;
+  handleDelete: (id: string) => void;
 }
 
-const DataTable = <TData, TValue>({
+const DataTable = <TData extends { id: string }, TValue>({
   columns,
   data,
   DataModal,
+  handleDelete,
 }: DataTableProps<TData, TValue>) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -69,9 +71,21 @@ const DataTable = <TData, TValue>({
     },
   });
 
+  // Delete selected rows
+  const selectedRows = table?.getSelectedRowModel().rows;
+  const handleDeleteSelectedRows = () => {
+    selectedRows.forEach((row) => {
+      // Perform delete operation for each selected row
+      const companyId = row.original.id;
+      handleDelete(companyId);
+    });
+    // Clear the selection after deletion
+    table.setRowSelection({});
+  };
+
   return (
     <div>
-      <div className="flex justify-between items-center py-4">
+      <div className="flex justify-between items-center py-4 gap-4">
         {/* Search filter - Filter for specific Data */}
         <Input
           placeholder="Filter Data..."
@@ -83,6 +97,15 @@ const DataTable = <TData, TValue>({
         />
         {/* Visibility Menu - Chooses which columns are visible */}
         <div className="flex items-center space-x-2">
+          {selectedRows.length > 0 && (
+            <Button
+              onClick={handleDeleteSelectedRows}
+              variant="outline"
+              className="text-red-500"
+            >
+              Delete
+            </Button>
+          )}
           <DataModal />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -174,18 +197,6 @@ const DataTable = <TData, TValue>({
           <div>
             {table.getFilteredSelectedRowModel().rows.length} of {""}
             {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div>
-          <div className="flex gap-2">
-            {table.getSelectedRowModel().rows.map((row) => (
-              <Link
-                key={row.id}
-                href={`/Data/${row.id}`}
-                className="text-blue-500 hover:underline"
-              >
-                {row.getValue("name")}
-                {row.getValue("posts")}
-              </Link>
-            ))}
           </div>
         </div>
         {/* Pagination */}

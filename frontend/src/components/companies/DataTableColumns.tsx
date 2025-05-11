@@ -14,6 +14,8 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Company } from "@/types/company";
 import { useRouter } from "next/navigation";
+import { useRemoveCompany } from "@/hooks/useCompanies";
+import { useAppSelector } from "@/redux/hook";
 
 export const CompanyDataTableColumns: ColumnDef<Company>[] = [
   {
@@ -53,17 +55,13 @@ export const CompanyDataTableColumns: ColumnDef<Company>[] = [
       );
     },
   },
+  // {
+  //   accessorKey: "posts",
+  //   header: "Posts",
+  // },
   {
-    accessorKey: "posts",
-    header: "Posts",
-  },
-  {
-    accessorKey: "overall_sentiment_label",
-    header: "Overall Sentiment",
-  },
-  {
-    accessorKey: "overall_sentiment_value",
-    header: "Overall Sentiment Value",
+    accessorKey: "follower_count",
+    header: "Followers",
   },
   {
     id: "actions",
@@ -74,6 +72,13 @@ export const CompanyDataTableColumns: ColumnDef<Company>[] = [
 
       // Used to navigate to different pages
       const router = useRouter();
+
+      // APIs to add and remove companies
+      const userEmail = useAppSelector((state) => state.user.email);
+      const removeCompany = useRemoveCompany(userEmail);
+      function handleRemove(id: string) {
+        removeCompany.mutate(id);
+      }
 
       return (
         <DropdownMenu>
@@ -94,9 +99,7 @@ export const CompanyDataTableColumns: ColumnDef<Company>[] = [
               View Company
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(company.id)}
-            >
+            <DropdownMenuItem onClick={() => handleRemove(company.id)}>
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

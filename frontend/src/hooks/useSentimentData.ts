@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchSentimentData } from "@/lib/queries/fetchSentiment";
+import { fetchSentimentData } from "@/lib/queries/sentiment";
 
 export function useSentimentData({
   companies,

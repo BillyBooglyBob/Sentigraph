@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { useAppSelector } from "@/redux/hook";
+import { useAddCompany } from "@/hooks/useCompanies";
 
 const formSchema = z.object({
   company: z.string().min(1, {
@@ -33,8 +35,21 @@ const CompanyDataForm = () => {
     },
   });
 
+  // API call to add company
+  const userEmail = useAppSelector((state) => state.user.email);
+  const addCompany = useAddCompany(userEmail);
+
+  function handleAdd(name: string) {
+    addCompany.mutate(name);
+  }
+
   // Handle form submission
   const handleSubmit = (data: z.infer<typeof formSchema>) => {
+    handleAdd(data.company);
+
+    // Reset form
+    form.reset();
+
     toast("Company added successfully", {
       action: {
         label: "Close",
