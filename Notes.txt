@@ -64,7 +64,6 @@ Auth
   4. Learn how to delete
   5. Test API
   6. Implement into code
-- user profile page (can modify the page)
 
 - Need bearer token in the request header else won't work.
 
@@ -83,11 +82,17 @@ Admin
   - Connect to frontend
 
 
+- user profile page (can modify the page)
 
 
+Postman testing:
+- Login first to get access token
+- When doing authorised calls, copy token into Authentication -> Bearer Token
+- Then can make authorised calls
 
 
-
+- Faulty sentiment analysis
+  - presumably due to case sensitivity.
 
 
 

@@ -13,7 +13,7 @@ export function useSentimentData({
   return useQuery({
     queryKey: ["sentimentData", companies, aspect, timeframe],
     queryFn: () => fetchSentimentData({ companies, aspect, timeframe }),
-    enabled: companies.length > 0,
+    enabled: companies.length > 0 && aspect.trim() !== "",
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });

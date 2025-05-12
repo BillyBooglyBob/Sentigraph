@@ -20,4 +20,4 @@ urlpatterns = [
 # GET /api/company/Apple/
 
 # 2nd path example call
-# GET /api/aspect/sustainability/90d/?companies=Apple&companies=Tesla
+# GET /api/sentiment/sentiments/?companies=Apple&companies=Tesla&aspect=sustainability&timeframe=90d

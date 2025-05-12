@@ -76,5 +76,10 @@ def get_aspect_company_sentiment(request):
     if not aspect_name or not company_names or not timeframe:
         return JsonResponse({"error": "Missing required query parameters"}, status=400)
 
+    # Normalise the input
+    aspect_name = aspect_name.lower()
+    timeframe = timeframe.lower()
+    company_names = [c.lower() for c in company_names]
+
     data = get_company_aspect_sentiment_data(aspect_name, timeframe, company_names)
     return JsonResponse(data)
