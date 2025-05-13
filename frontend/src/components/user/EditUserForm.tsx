@@ -14,13 +14,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import users from "@/data/users";
 import { toast } from "sonner";
 
 const formSchema = z.object({
-  name: z.string().min(1, {
-    message: "Name is required",
-  }),
   email: z.string().email().min(1, {
     message: "Email is required",
   }),
@@ -33,26 +29,34 @@ const formSchema = z.object({
 });
 
 interface UserEditPageProps {
-  userId: string;
+  user: {
+    email: string;
+    id: string;
+  };
+  handleSubmitHelper: (
+    user_id: string,
+    email: string,
+    password1: string,
+    password2: string
+  ) => void;
 }
 
-const EditUserForm = ({ userId }: UserEditPageProps) => {
-  // Get data for the current user by looking up the ID in the URL
-  const user = users.find((user) => user.id === userId);
-
+const EditUserForm = ({ user, handleSubmitHelper }: UserEditPageProps) => {
   // Define form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: user?.name || "",
-      email: user?.email || "",
-      password: user?.password || "",
-      confirmPassword: user?.password || "",
+      email: user.email || "",
+      password: "",
+      confirmPassword: "",
     },
   });
 
   // Handle form submission
   const handleSubmit = (data: z.infer<typeof formSchema>) => {
+    const { email, password, confirmPassword } = data;
+    handleSubmitHelper(user.id, email, password, confirmPassword);
+
     toast("User updated successfully", {
       action: {
         label: "Close",
@@ -66,30 +70,6 @@ const EditUserForm = ({ userId }: UserEditPageProps) => {
       <h3 className="text-2xl mb-4">Edit User</h3>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white">
-                  Username
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="bg-slate-100 dark:bg-slate-500 border-0 
-                    focus-visible:ring-0 text-black dark:text-white 
-                    focus-visible:ring-offset-0"
-                    placeholder="Enter the username"
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription className="text-xs text-zinc-500 dark:text-white">
-                  This is the public display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="email"

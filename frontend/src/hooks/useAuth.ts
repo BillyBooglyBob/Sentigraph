@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   loginUser,
   registerUser,
@@ -53,3 +53,5 @@ export function useAuth() {
     logout,
   };
 }
+
+

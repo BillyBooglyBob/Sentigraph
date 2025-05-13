@@ -60,15 +60,14 @@ const Navbar = () => {
             <DropdownMenuSeparator />
             {/* Conditionally render menu depending on login status */}
             {user.email ? (
-              <>
-                <DropdownMenuItem>
-                  <Link href="/profile">Profile</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleLogout}>
-                  Log out
-                </DropdownMenuItem>
-              </>
+              <DropdownMenuItem onClick={handleLogout}>
+                Log out
+              </DropdownMenuItem>
             ) : (
+              // <DropdownMenuItem>
+              //   <Link href="/profile">Profile</Link>
+              // </DropdownMenuItem>
+
               <>
                 <DropdownMenuItem>
                   <Link href="/auth">Login/Register</Link>

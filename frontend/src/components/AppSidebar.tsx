@@ -70,7 +70,7 @@ const AppSidebar = () => {
     ...(user?.is_staff || user?.is_superuser
       ? [{ label: "Admin", items: items.admin }]
       : []),
-    { label: "Profile", items: items.user },
+    // { label: "Profile", items: items.user },
   ];
 
   return (

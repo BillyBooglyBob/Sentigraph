@@ -1,8 +1,8 @@
 import {
-  getTokenFromCookies,
   handleLoginAddCookies,
   handleLogOutClearCookies,
 } from "../action";
+import { getAuthHeaders } from "./getAuthHeader";
 
 /* 
 Only use (credentials: "include") if you need to send cookies with the request.
@@ -85,17 +85,14 @@ export async function logoutUser() {
 }
 
 export async function getUserInformation(data: { email: string }) {
-  const { accessToken } = await getTokenFromCookies();
+  const headers = await getAuthHeaders();
 
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_HOST}/api/auth/user/${data.email}/`,
       {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken?.value}`, // Use the access token for authentication
-        },
+        headers,
         credentials: "include", // Only use if you need to send cookies
       }
     );

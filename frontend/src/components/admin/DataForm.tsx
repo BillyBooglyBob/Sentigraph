@@ -15,11 +15,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { useCreateUser } from "@/hooks/useAdmin";
 
 const formSchema = z.object({
-  name: z.string().min(1, {
-    message: "Name is required",
-  }),
   email: z.string().email().min(1, {
     message: "Email is required",
   }),
@@ -32,15 +30,31 @@ const formSchema = z.object({
 });
 
 /* Create the user */
-/* TODO - create the user */
 const UserDataForm = () => {
   // Define form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
+
+  // API call to add user
+  const addUser = useCreateUser();
+
+  function handleAdd(email: string, password1: string, password2: string) {
+    addUser.mutate({ email, password1, password2 });
+  }
 
   // Handle form submission
   const handleSubmit = (data: z.infer<typeof formSchema>) => {
+    handleAdd(data.email, data.password, data.confirmPassword);
+
+    // Reset form
+    form.reset();
+
     toast("User updated successfully", {
       action: {
         label: "Close",
@@ -51,30 +65,6 @@ const UserDataForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white">
-                Username
-              </FormLabel>
-              <FormControl>
-                <Input
-                  className="bg-slate-100 dark:bg-slate-500 border-0
-                  focus-visible:ring-0 text-black dark:text-white
-                  focus-visible:ring-offset-0"
-                  placeholder="Enter the username"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription className="text-xs text-zinc-500 dark:text-white">
-                This is the public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="email"

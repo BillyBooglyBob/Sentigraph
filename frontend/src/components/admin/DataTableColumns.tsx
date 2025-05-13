@@ -14,6 +14,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { User } from "@/types/user";
 import { useRouter } from "next/navigation";
+import { useRemoveUser } from "@/hooks/useAdmin";
 
 export const DataTableColumns: ColumnDef<User>[] = [
   {
@@ -86,30 +87,40 @@ export const DataTableColumns: ColumnDef<User>[] = [
       // Used to navigate to different pages
       const router = useRouter();
 
+      // APIs to remove the user
+      const removeUser = useRemoveUser();
+      function handleRemove(userId: string) {
+        removeUser.mutate(userId);
+      }
+
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className="h-8 w-8 p-0 focus:outline-none focus:ring-0"
-            >
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => router.push(`/admin/${user.id}`)}>
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(user.id)}
-            >
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="h-8 w-8 p-0 focus:outline-none focus:ring-0"
+              >
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              {/* Redirect to edit user form */}
+              <DropdownMenuItem
+                onClick={() => router.push(`/admin/${user.email}`)}
+              >
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              {/* Deletes the current user */}
+              <DropdownMenuItem onClick={() => handleRemove(user.id)}>
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </>
       );
     },
   },
