@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     # To enable authentication
     "allauth",
     "allauth.account",
+    "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
     # Allow cross-origin requests (e.g. from the frontend)
@@ -87,6 +88,7 @@ INSTALLED_APPS = [
     "useraccount",
     "sentiment",
     "dataload",
+    "adminpanel",
 ]
 
 MIDDLEWARE = [

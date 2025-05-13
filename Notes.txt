@@ -17,6 +17,10 @@ Development:
 - inside backend directory
 - docker-compose up -d to run the containers
 
+- Create new app
+  - docker-compose exec web python manage.py startapp <appname>
+  - Add to INSTALLED_APPS in settings.py 
+
 - give permission to save
   - docker-compose exec web bash
   - chown -R 1000:1000 /usr/src/sentigraph_backend/
@@ -72,10 +76,13 @@ Auth
 
 Admin
 - CRUD operation on users
-  - read users (Only allow data for user with admin permission)
-  - create user
-  - delete user
-  - update user (need to implement profile page, will use same set of API)
+  - (GOOD) read users (Only allow data for user with admin permission) 
+  - (GOOD) delete user
+  - (GOOD) create user
+  - (GOOD) update user (need to implement profile page, will use same set of API)
+
+  - create and update seems to have some problem with actually logging in 
+    and saving the password correctly
 - Implement one operation at a time
   - Implement in the backend
   - Test API
@@ -83,6 +90,27 @@ Admin
 
 
 - user profile page (can modify the page)
+
+- Need to send data like this for create and update user:
+{
+  "email": "abc@example.com",
+  "password1": "1234",
+  "password2": "1234"
+}
+
+example fetch call:
+fetch("/users/", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer <token>",
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    email: "abc@example.com",
+    password1: "1234",
+    password2: "1234"
+  })
+})
 
 
 Postman testing:
